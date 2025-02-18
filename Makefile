@@ -9,14 +9,16 @@ SERVER_SRC = server.c utils.c
 SERVER_OBJ = server.o utils.o
 SERVER_X = server
 
+PRINTF_OBJ = printf/libftprintf.a
+
 all: $(CLIENT_X) $(SERVER_X)
 
 
 $(CLIENT_X): $(CLIENT_OBJ)
-	$(CC) $(FLAGS) -o $(CLIENT_X) $(CLIENT_OBJ)
+	$(CC) $(FLAGS) -o $(CLIENT_X) $(CLIENT_OBJ) $(PRINTF_OBJ)
 
 $(SERVER_X): $(SERVER_OBJ)
-	$(CC) $(FLAGS) -o $(SERVER_X) $(SERVER_OBJ)
+	$(CC) $(FLAGS) -o $(SERVER_X) $(SERVER_OBJ) $(PRINTF_OBJ)
 
 client.o: client.c
 	$(CC) $(FLAGS) -c client.c
