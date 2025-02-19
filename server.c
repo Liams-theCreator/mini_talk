@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 18:27:14 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/19 16:39:44 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/19 19:28:30 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 void	sig_handler(int signal, siginfo_t *info, void *context)
 {
-	static unsigned	char	bits[8];
+	static unsigned char	bits[8];
 	static int				index = 0;
 	unsigned char			char_byte;
 	int						i;
 
 	(void)context;
-	(void)info;
 	if (signal == SIGUSR1)
 		bits[index] = 0;
 	else if (signal == SIGUSR2)
@@ -35,22 +34,25 @@ void	sig_handler(int signal, siginfo_t *info, void *context)
 			char_byte |= bits[i] << (7 - i);
 			i++;
 		}
-		ft_printf("%c", char_byte);
 		index = 0;
+		if (char_byte != '\0')
+			ft_printf("%c", char_byte);
+		else
+			kill(info->si_pid, SIGUSR1);
 	}
 }
 
-int main(void)
+int	main(void)
 {
-	struct sigaction sa;
+	struct sigaction	sig;
+
 	ft_printf("Server is Running..\nServer PID : %d\n", getpid());
-	
-	sa.sa_sigaction = sig_handler;
-	sa.sa_flags = SA_RESTART | SA_SIGINFO;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	sig.sa_sigaction = sig_handler;
+	sig.sa_flags = SA_SIGINFO;
+	sigemptyset(&sig.sa_mask);
+	sigaction(SIGUSR1, &sig, NULL);
+	sigaction(SIGUSR2, &sig, NULL);
 	while (1)
 		pause();
-	return 0;
+	return (0);
 }

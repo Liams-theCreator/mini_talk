@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 18:27:44 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/19 13:51:25 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/19 19:25:40 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,24 @@ char	*convert_to_bin(char byte)
 	return (ft_strdup(bin));
 }
 
-int main(int argc, char **argv)
+void	sig_back_handler(int sigint)
 {
-	char	*message;
-	char	*bin;
-	int		pid;
+	(void)sigint;
+	ft_printf("MESSAGE FROM SERVER : DONE.\n");
+	exit(0);
+}
+
+void	send_signal(char *message, int pid)
+{
 	int		i;
 	int		j;
+	char	*bin;
 
-	if (argc < 3)
-		return (-1);
-
-	pid = ft_atoi(argv[2]);
-	if (pid <= 2)
-		return (-1);
-
-	message = argv[1];
-	i = 0;
 	while (message[i])
 	{
 		bin = convert_to_bin(message[i]);
 		if (!bin)
-			return (-1);
+			exit(-1);
 		j = 0;
 		while (bin[j])
 		{
@@ -59,11 +55,41 @@ int main(int argc, char **argv)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
-			usleep(100);
+			usleep(150);
 			j++;
 		}
 		free(bin);
 		i++;
 	}
-	return 0;
+}
+
+void	send_null(int pid)
+{
+	int	i;
+
+	i = 0;
+	while (i < 8)
+	{
+		kill(pid, SIGUSR1);
+		usleep(150);
+		i++;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	char	*message;
+	int		pid;
+
+	if (argc < 3)
+		return (-1);
+	pid = ft_atoi(argv[2]);
+	if (pid < 0)
+		return (-1);
+	message = argv[1];
+	signal(SIGUSR1, sig_back_handler);
+	send_signal(message, pid);
+	send_null(pid);
+	pause();
+	return (0);
 }

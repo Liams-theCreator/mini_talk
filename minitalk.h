@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 18:28:33 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/18 18:51:19 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/19 19:26:54 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include "printf/ft_printf.h"
 
-int	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 char	*ft_strdup(const char *s);
 
 #endif
