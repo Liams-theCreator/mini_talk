@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 18:27:44 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/19 19:25:40 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/19 23:01:30 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	send_signal(char *message, int pid)
 	int		j;
 	char	*bin;
 
+	i = 0;
 	while (message[i])
 	{
 		bin = convert_to_bin(message[i]);
@@ -55,7 +56,7 @@ void	send_signal(char *message, int pid)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
-			usleep(150);
+			usleep(250);
 			j++;
 		}
 		free(bin);

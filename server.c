@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 18:27:14 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/19 19:28:30 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/19 22:57:15 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	sig_handler(int signal, siginfo_t *info, void *context)
+void sig_handler(int signal, siginfo_t *info, void *context)
 {
-	static unsigned char	bits[8];
-	static int				index = 0;
-	unsigned char			char_byte;
-	int						i;
+	static unsigned char bits[8];
+	static int index = 0;
+	unsigned char char_byte;
+	int i;
 
 	(void)context;
 	if (signal == SIGUSR1)
@@ -42,11 +42,31 @@ void	sig_handler(int signal, siginfo_t *info, void *context)
 	}
 }
 
-int	main(void)
+void print_banner(void)
 {
-	struct sigaction	sig;
+	ft_printf("\033[1;32m");
+	ft_printf("\n");
+	ft_printf("   ██████ ███████ ██████  ██    ██ ███████ ██████   \n");
+	ft_printf("  ██      ██      ██   ██ ██    ██ ██      ██   ██  \n");
+	ft_printf("   █████  █████   ██████  ██    ██ █████   ██████   \n");
+	ft_printf("       ██ ██      ██   ██  ██  ██  ██      ██   ██  \n");
+	ft_printf("  ██████  ███████ ██   ██   ████   ███████ ██   ██  \n");
+	ft_printf("\033[0m\n");
+	ft_printf("\033[1;36m──────────────────────────────────────────────────\033[0m\n");
+	ft_printf("\033[1;33m\033[5m");
+	ft_printf("  ➤ Server is Running...\n");
+	ft_printf("\033[0m");
+	ft_printf("\033[1;34m\033[4m");
+	ft_printf("  ➤ Server PID : %d\n", getpid());
+	ft_printf("\033[0m");
+	ft_printf("\033[1;36m──────────────────────────────────────────────────\033[0m\n");
+}
 
-	ft_printf("Server is Running..\nServer PID : %d\n", getpid());
+int main(void)
+{
+	struct sigaction sig;
+
+	print_banner();
 	sig.sa_sigaction = sig_handler;
 	sig.sa_flags = SA_SIGINFO;
 	sigemptyset(&sig.sa_mask);
