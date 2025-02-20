@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 22:16:16 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/19 22:29:58 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:53:13 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*convert_to_bin(char byte)
 static void	sig_back_handler(int sigint)
 {
 	(void)sigint;
-	ft_printf("MESSAGE FROM SERVER : DONE.\n");
+	ft_printf("SIGNAL FROM SERVER: DONE ✅\n");
 	exit(0);
 }
 
