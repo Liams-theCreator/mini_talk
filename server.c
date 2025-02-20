@@ -62,6 +62,7 @@ int main(void)
 {
     print_banner();
     signal(SIGUSR1, sig_handler);
+	signal(SIGUSR2, sig_handler);
     while (1)
         pause();
     return (0);
