@@ -12,85 +12,62 @@
 
 #include "minitalk.h"
 
-char	*convert_to_bin(char byte)
+static char *convert_to_bin(char byte)
 {
-	int		i;
-	int		j;
-	char	bin[9];
+    int i;
+    int j;
+    char bin[9];
 
-	i = 7;
-	j = 0;
-	while (i >= 0 && j < 8)
-	{
-		bin[j] = ((byte >> i) & 1) + '0';
-		j++;
-		i--;
-	}
-	bin[8] = '\0';
-	return (ft_strdup(bin));
+    i = 7;
+    j = 0;
+    while (i >= 0 && j < 8)
+    {
+        bin[j] = ((byte >> i) & 1) + '0';
+        j++;
+        i--;
+    }
+    bin[8] = '\0';
+    return (ft_strdup(bin));
 }
 
-void	sig_back_handler(int sigint)
+static void send_signal(char *message, int pid)
 {
-	(void)sigint;
-	ft_printf("MESSAGE FROM SERVER : DONE.\n");
-	exit(0);
+    int i;
+    int j;
+    char *bin;
+
+    i = 0;
+    while (message[i])
+    {
+        bin = convert_to_bin(message[i]);
+        if (!bin)
+            exit(-1);
+        j = 0;
+        while (bin[j])
+        {
+            if (bin[j] == '0')
+                kill(pid, SIGUSR1);
+            else
+                kill(pid, SIGUSR2);
+            usleep(150);
+            j++;
+        }
+        free(bin);
+        i++;
+    }
 }
 
-void	send_signal(char *message, int pid)
+int main(int argc, char **argv)
 {
-	int		i;
-	int		j;
-	char	*bin;
+    char *message;
+    int pid;
 
-	i = 0;
-	while (message[i])
-	{
-		bin = convert_to_bin(message[i]);
-		if (!bin)
-			exit(-1);
-		j = 0;
-		while (bin[j])
-		{
-			if (bin[j] == '0')
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
-			usleep(250);
-			j++;
-		}
-		free(bin);
-		i++;
-	}
-}
-
-void	send_null(int pid)
-{
-	int	i;
-
-	i = 0;
-	while (i < 8)
-	{
-		kill(pid, SIGUSR1);
-		usleep(150);
-		i++;
-	}
-}
-
-int	main(int argc, char **argv)
-{
-	char	*message;
-	int		pid;
-
-	if (argc < 3)
-		return (-1);
-	pid = ft_atoi(argv[2]);
-	if (pid < 0)
-		return (-1);
-	message = argv[1];
-	signal(SIGUSR1, sig_back_handler);
-	send_signal(message, pid);
-	send_null(pid);
-	pause();
-	return (0);
+    if (argc < 3)
+        return (-1);
+    pid = ft_atoi(argv[2]);
+    if (pid < 0)
+        return (-1);
+    message = argv[1];
+    send_signal(message, pid);
+    return (0);
 }
