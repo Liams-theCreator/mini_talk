@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 22:16:16 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/20 14:55:43 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:48:02 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	send_signal(char *message, int pid)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
-			usleep(150);
+			usleep(350);
 			j++;
 		}
 		free(bin);
