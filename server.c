@@ -6,19 +6,43 @@
 /*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 18:27:14 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/22 16:46:34 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:40:31 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	sig_handler(int signal)
+static unsigned char	decode_bin(unsigned char *bits)
+{
+	unsigned char	char_byte;
+	int				i;
+
+	char_byte = 0;
+	i = 0;
+	while (i < 8)
+	{
+		char_byte |= bits[i] << (7 - i);
+		i++;
+	}
+	return (char_byte);
+}
+
+static void	set_values(int *index, int *ccp, int pid)
+{
+	*index = 0;
+	*ccp = pid;
+}
+
+static void	sig_handler(int signal, siginfo_t *info, void *context)
 {
 	static unsigned char	bits[8];
 	static int				index = 0;
+	static int				ccp = 0;
 	unsigned char			char_byte;
-	int						i;
 
+	(void)context;
+	if (ccp != info->si_pid)
+		set_values(&index, &ccp, info->si_pid);
 	if (signal == SIGUSR1)
 		bits[index] = 0;
 	else if (signal == SIGUSR2)
@@ -26,15 +50,12 @@ static void	sig_handler(int signal)
 	index++;
 	if (index == 8)
 	{
-		char_byte = 0;
-		i = 0;
-		while (i < 8)
-		{
-			char_byte |= bits[i] << (7 - i);
-			i++;
-		}
+		char_byte = decode_bin(bits);
 		index = 0;
-		ft_printf("%c", char_byte);
+		if (char_byte != '\0')
+			ft_printf("%c", char_byte);
+		else
+			ft_printf("\n");
 	}
 }
 
@@ -60,9 +81,16 @@ static void	print_banner(void)
 
 int	main(void)
 {
+	struct sigaction	sig;
+
 	print_banner();
-	signal(SIGUSR1, sig_handler);
-	signal(SIGUSR2, sig_handler);
+	sig.sa_sigaction = sig_handler;
+	sig.sa_flags = SA_SIGINFO;
+	sigemptyset(&sig.sa_mask);
+	sigaddset(&sig.sa_mask, SIGUSR1);
+	sigaddset(&sig.sa_mask, SIGUSR2);
+	sigaction(SIGUSR1, &sig, NULL);
+	sigaction(SIGUSR2, &sig, NULL);
 	while (1)
 		pause();
 	return (0);

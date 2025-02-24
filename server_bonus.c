@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 22:16:29 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/22 14:51:03 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:25:37 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,22 @@ static unsigned char	decode_bin(unsigned char *bits)
 	return (char_byte);
 }
 
+void	set_values(int *index, int *ccp, int pid)
+{
+	*index = 0;
+	*ccp = pid;
+}
+
 static void	sig_handler(int signal, siginfo_t *info, void *context)
 {
 	static unsigned char	bits[8];
 	static int				index = 0;
+	static int				ccp = 0;
 	unsigned char			char_byte;
 
 	(void)context;
+	if (ccp != info->si_pid)
+		set_values(&index, &ccp, info->si_pid);
 	if (signal == SIGUSR1)
 		bits[index] = 0;
 	else if (signal == SIGUSR2)
@@ -46,7 +55,10 @@ static void	sig_handler(int signal, siginfo_t *info, void *context)
 		if (char_byte != '\0')
 			ft_printf("%c", char_byte);
 		else
+		{
+			ft_printf("\n");
 			kill(info->si_pid, SIGUSR1);
+		}
 	}
 }
 
@@ -78,6 +90,8 @@ int	main(void)
 	sig.sa_sigaction = sig_handler;
 	sig.sa_flags = SA_SIGINFO;
 	sigemptyset(&sig.sa_mask);
+	sigaddset(&sig.sa_mask, SIGUSR1);
+	sigaddset(&sig.sa_mask, SIGUSR2);
 	sigaction(SIGUSR1, &sig, NULL);
 	sigaction(SIGUSR2, &sig, NULL);
 	while (1)
