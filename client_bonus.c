@@ -6,11 +6,11 @@
 /*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 22:16:16 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/24 20:30:52 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:57:47 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 static void	sig_back_handler(int sigint)
 {

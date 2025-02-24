@@ -6,11 +6,11 @@
 /*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 22:16:29 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/24 20:25:37 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:57:56 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 static unsigned char	decode_bin(unsigned char *bits)
 {
