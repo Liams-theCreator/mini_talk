@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 20:56:58 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/24 20:57:36 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:21:45 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,3 @@ int		ft_atoi(const char *str);
 char	*ft_strdup(const char *s);
 
 #endif
-
