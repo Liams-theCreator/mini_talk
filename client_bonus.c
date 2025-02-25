@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 22:16:16 by imellali          #+#    #+#             */
-/*   Updated: 2025/02/24 20:57:47 by imellali         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:29:14 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	main(int argc, char **argv)
 	char	*message;
 	int		pid;
 
-	if (argc < 3)
+	if (argc != 3 || argv[2][0] == '\0')
 		return (-1);
 	pid = ft_atoi(argv[1]);
 	if (pid < 0)
